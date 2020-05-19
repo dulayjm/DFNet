@@ -26,10 +26,10 @@ class Tester:
     def input_size(self):
         if self._input_size > 0:
             return (self._input_size, self._input_size)
-        elif 'celeba' in self.model_path:
-            return (256, 256)
+        # elif 'celeba' in self.model_path:
+        #     return (256, 256)
         else:
-            return (512, 512)
+            return (256, 256)
 
     def init_model(self, path):
         if torch.cuda.is_available():
@@ -119,6 +119,8 @@ class Tester:
             img = cv2.imread(str(pair['img_path']), cv2.IMREAD_COLOR)
             mask = cv2.imread(str(pair['mask_path']), cv2.IMREAD_GRAYSCALE)
             if input_size:
+                img = img[0:256, 0:256]
+                mask = mask[0:256, 0:256]
                 img = cv2.resize(img, input_size)
                 mask = cv2.resize(mask, input_size)
             img = np.ascontiguousarray(img.transpose(2, 0, 1)).astype(np.uint8)
